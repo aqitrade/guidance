@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<client>
+    <connectors>
+        <connector type="CTPTradeConnector" name="Test Trade Module" host="220.248.39.106" port="41205" >
+            <server>
+                <!-- bcReal -->
+                <address host="220.248.39.103" port="41205"/>
+                <address host="220.248.39.104" port="41205"/>
+                <address host="220.248.39.105" port="41205"/>
+                <address host="220.248.39.106" port="41205"/>
+                <address host="180.169.95.243" port="41205"/>
+                <address host="180.169.95.244" port="41205"/>
+                <address host="180.169.95.245" port="41205"/>
+                <address host="180.169.95.246" port="41205"/>
+            </server>
+            <brokers>
+                <broker id="5040"/>
+            </brokers>
+            <messagebus>
+                <address host="rabbitmq" port="5672" exchange="5040"/>
+            </messagebus>
+        </connector>
+        <connector type="CTPAccountVerificatorConnector" name="Account Verificator" host="220.248.39.106" port="41205" >
+            <server>
+                <!-- bcReal -->
+                <address host="220.248.39.103" port="41205"/>
+                <address host="220.248.39.104" port="41205"/>
+                <address host="220.248.39.105" port="41205"/>
+                <address host="220.248.39.106" port="41205"/>
+                <address host="180.169.95.243" port="41205"/>
+                <address host="180.169.95.244" port="41205"/>
+                <address host="180.169.95.245" port="41205"/>
+                <address host="180.169.95.246" port="41205"/>
+            </server>
+            <brokers>
+                <broker id="5040"/>
+            </brokers>
+            <messagebus>
+                <address host="rabbitmq" port="5672" exchange="5040"/>
+            </messagebus>
+        </connector>
+<!--
+        <connector type="CTPSubscriptionTrackerConnector" name="Subscription Tracker Module" host="220.248.39.106" port="41205" >
+            <brokers>
+                <broker id="5040">
+                    <users>
+                        <user account_id="91000961" password="140797"/>
+                    </users>
+                </broker>
+            </brokers>
+            <messagebus>
+                <address host="rabbitmq" port="5672"/>
+            </messagebus>
+        </connector>
+-->
+        <connector type="CTPositionTrackerConnector" name="Test Position Tracker" host="220.248.39.106" port="41205" >
+            <server>
+                <!-- bcReal -->
+                <address host="220.248.39.103" port="41205"/>
+                <address host="220.248.39.104" port="41205"/>
+                <address host="220.248.39.105" port="41205"/>
+                <address host="220.248.39.106" port="41205"/>
+                <address host="180.169.95.243" port="41205"/>
+                <address host="180.169.95.244" port="41205"/>
+                <address host="180.169.95.245" port="41205"/>
+                <address host="180.169.95.246" port="41205"/>
+            </server>
+            <brokers>
+                <broker id="5040"/>
+            </brokers>
+            <messagebus>
+                <address host="rabbitmq" port="5672" exchange="5040"/>
+            </messagebus>
+        </connector>
+    </connectors>
+    <logger config="/etc/brokerclient/logger.properties"/>
+</client>

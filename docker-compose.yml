@@ -1,0 +1,89 @@
+version: '3'
+services:
+  mysql:
+    image: mysql
+    user: $ENV_USER
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 'rootpw'
+      MYSQL_DATABASE: dbName
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+    volumes:
+      - $DEVOPS_PATH/data:/var/lib/mysql
+      - $DEVOPS_PATH/dump:/docker-entrypoint-initdb.d
+      - $DEVOPS_PATH/config/mysql/my.cnf:/etc/alternatives/my.cnf
+  rabbitmq:
+    image: rabbitmq:3-management
+    user: $ENV_USER
+    restart: always
+    ports:
+      - "15672:15672"
+      - "25672:25672"
+      - "5672:5672" # needed by cluster
+      - "4369:4369" # needed by cluster
+    environment:
+      - RABBITMQ_ERLANG_COOKIE='whoMovedMyCookies' # needed by cluster
+      - RABBITMQ_LOGS='/var/log/rabbitmq/rabbitmq.log'
+      - RABBITMQ_SASL_LOGS='/var/log/rabbitmq/rabbitmq-sasl.log'
+    volumes:
+      - $DEVOPS_PATH/log/rabbitmq:/var/log/rabbitmq
+  deepstream:
+    image: deepstreamio/deepstream.io
+    ports:
+      - "6020:6020"
+      - "6021:6021"
+    volumes:
+      - $DEVOPS_PATH/config/deepstream:/usr/local/deepstream/conf
+  phoenix_bcReal:
+    image: aqitrade/phoenix
+    user: $ENV_USER
+    restart: always
+    volumes:
+      - $DEVOPS_PATH/log/phoenix_bcReal:/var/log/brokerclient
+      - $DEVOPS_PATH/config/phoenix/bcReal.xml:/etc/brokerclient/ctpclient.xml
+      - $DEVOPS_PATH/config/phoenix/session:/etc/brokerclient/session
+  phoenix_sinoSteel:
+    image: aqitrade/phoenix
+    user: $ENV_USER
+    restart: always
+    volumes:
+      - $DEVOPS_PATH/log/phoenix_sinoSteel:/var/log/brokerclient
+      - $DEVOPS_PATH/config/phoenix/sinoSteel.xml:/etc/brokerclient/ctpclient.xml
+      - $DEVOPS_PATH/config/phoenix/session:/etc/brokerclient/session
+  raduga:
+    image: aqitrade/raduga
+    user: $ENV_USER
+    ports:
+      - "9000:9000"
+    volumes:
+      - $DEVOPS_PATH/config/raduga/raduga.conf:/opt/docker/conf/raduga.conf
+      - $DEVOPS_PATH/log/raduga:/opt/docker/logs
+      - $DEVOPS_PATH/log/algo:/opt/docker/logs/algo
+    extra_hosts:
+      - "dockerhost:$DOCKER0_IP"
+    environment:
+      - dockerhost=${DOCKER0_IP}
+      - host_name=${HOST}
+      - user=${ENV_USER}
+      - user_name=${USER_NAME}
+      - user_home=${USER_HOME}
+      - DEVOPS_PATH=${DEVOPS_PATH}
+  panda:
+    image: aqitrade/panda
+    ports:
+      - "80:80" # nginx port
+    volumes:
+      - $DEVOPS_PATH/config/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - $DEVOPS_PATH/config/nginx/cert/replace_ssl.pem:/etc/nginx/conf.d/aqitrade.pem
+      - $DEVOPS_PATH/config/nginx/cert/replace_ssl.key:/etc/nginx/conf.d/aqitrade.key
+      - $DEVOPS_PATH/config/nginx/cert/dhparam:/etc/nginx/conf.d/dhparam
+  mdserv:
+    image: aqitrade/mdserv
+    user: $ENV_USER
+    volumes:
+      - $DEVOPS_PATH/config/mdserv/c3p0.properties:/mdserv/config/c3p0.properties
+      - $DEVOPS_PATH/config/mdserv/ds.properties:/mdserv/config/ds.properties
+      - $DEVOPS_PATH/config/mdserv/mq.properties:/mdserv/config/mq.properties
+      - $DEVOPS_PATH/log/mdserv:/mdserv/logs

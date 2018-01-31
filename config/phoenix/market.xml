@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<client>
+    <connectors>
+        <connector type="CTPMarketDataConnector" name="Test Market Module" host="220.248.39.106" port="41213" >
+            <server>
+                <!-- bcReal -->
+                <address host="220.248.39.103" port="41213"/>
+                <address host="220.248.39.104" port="41213"/>
+                <address host="220.248.39.105" port="41213"/>
+                <address host="220.248.39.106" port="41213"/>
+                <address host="180.169.95.243" port="41213"/>
+                <address host="180.169.95.244" port="41213"/>
+                <address host="180.169.95.245" port="41213"/>
+                <address host="180.169.95.246" port="41213"/>
+                <!-- guoDu -->
+                <address host="140.206.102.218" port="41213"/>
+                <address host="180.166.45.98" port="41213"/>
+                <!-- mk -->
+                <address host="211.95.58.83" port="41213"/>
+                <address host="211.95.58.84" port="41213"/>
+                <address host="101.231.43.209" port="41213"/>
+                <address host="101.231.43.210" port="41213"/>
+                <!-- yide -->
+                <address host="123.124.200.140" port="41213"/>
+                <address host="210.13.94.50" port="41213"/>
+                <address host="180.166.38.165" port="41213"/>
+                <address host="222.73.92.148" port="41213"/>
+                <address host="219.143.39.83" port="41213"/>
+                <!-- zhaoJin -->
+                <address host="ctplt1.zjfutrues.cn" port="41213"/>
+                <address host="ctplt2.zjfutrues.cn" port="41213"/>
+                <address host="ctpdx1.zjfutrues.cn" port="41213"/>
+                <address host="ctpdx2.zjfutrues.cn" port="41213"/>
+            </server>
+            <brokers>
+                <broker id="5040">
+                </broker>
+            </brokers>
+            <messagebus>
+                <address host="rabbitmq" port="5672" exchange="MD"/>
+            </messagebus>
+        </connector>
+    </connectors>
+    <logger config="/etc/brokerclient/logger.properties"/>
+</client>
